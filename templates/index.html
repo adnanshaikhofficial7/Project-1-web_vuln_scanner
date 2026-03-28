@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Vulnerability Scanner</title>
+    <style>
+        body {
+            background: #0b1220;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 80px;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #00c853;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .box {
+            margin: 30px auto;
+            width: 400px;
+            background: #121b2b;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Web Vulnerability Scanner</h1>
+
+    <form method="POST">
+        <input type="text" name="url" placeholder="http://example.com" required>
+        <button type="submit">Scan</button>
+    </form>
+
+    {% if results %}
+    <div class="box">
+        <h3>Results</h3>
+
+        <p>SQL Injection:
+            {% if results.sql %} ❌ Vulnerable {% else %} ✅ Safe {% endif %}
+        </p>
+
+        <p>XSS:
+            {% if results.xss %} ❌ Vulnerable {% else %} ✅ Safe {% endif %}
+        </p>
+
+        <p>Open Ports:
+            {% if results.ports %}
+                ⚠️ {{ results.ports }}
+            {% else %}
+                ✅ None
+            {% endif %}
+        </p>
+
+        <p>Directory Listing:
+            {% if results.dir %} ❌ Enabled {% else %} ✅ Disabled {% endif %}
+        </p>
+
+        <p>Clickjacking Protection:
+            {% if results.clickjacking %} ❌ Missing {% else %} ✅ Present {% endif %}
+        </p>
+
+        <p>Missing Security Headers:
+            {% if results.headers %}
+                ❌ {{ results.headers }}
+            {% else %}
+                ✅ All present
+            {% endif %}
+        </p>
+
+        <p>robots.txt:
+            {% if results.robots %} ⚠️ Found {% else %} ✅ Not Found {% endif %}
+        </p>
+
+        <p>Server:
+            {{ results.server }}
+        </p>
+        <p>CSRF Protection:
+            {% if results.csrf %} ❌ Missing {% else %} ✅ Present {% endif %}
+        </p>
+        <p>HTTPS:
+            {% if results.https %} ✅ Secure {% else %} ❌ Not Using HTTPS {% endif %}
+        </p>
+        <p>Admin Panels:
+            {% if results.admin %} ⚠️ {{ results.admin }} {% else %} ✅ Not Found {% endif %}
+        </p>
+        <p>File Upload Endpoints:
+            {% if results.fileupload %} ⚠️ {{ results.fileupload }} {% else %} ✅ Not Found {% endif %}
+        </p>
+        
+        <p>Detected Technologies:
+            {% if results.tech %} 🧠 {{ results.tech }} {% else %} Unknown {% endif %}
+        </p>
+    </div>
+    {% endif %}
+</body>
+</html>
